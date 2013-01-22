@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+# still need to package this as a binary executable
+
+require 'autotag'
+#puts Hola.hi(ARGV[0])
