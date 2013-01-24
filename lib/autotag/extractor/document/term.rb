@@ -4,7 +4,7 @@ class Autotag::Extractor::Term
 	# define location in histogram?
 	def initialize(term,coordinates)
 		@term = term
-		@coods = [coordinates]
+		@coordinates = [coordinates]
 	end
 
 	def to_s
@@ -12,5 +12,6 @@ class Autotag::Extractor::Term
 	end
 
 	def merge(coordiantes)
+		@coordinates << coordinates
 	end
 end

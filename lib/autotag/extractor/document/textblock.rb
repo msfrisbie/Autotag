@@ -5,11 +5,22 @@ class Autotag::Extractor::Textblock
 
   def initialize(str,charsize,wordsize)
     # count the number of blocks of non-whitespace characters
+    @charsize = charsize
+    @wordsize = wordsize
     @words = str.split(/\p{Z}+/).reject{|f| f.empty?}
     @size = @words.size
   end
 
-  def plaintext#-+9
+  def ratio
+    return @wordsize.to_f/@charsize.to_f
+  end
+
+  def stemwords
+    s = Lingua::Stemmer.new(:language => "en")
+    @words.map{|f| [s.stem(f.gsub(/[^A-Za-z0-9]/,'')),f]}
+  end
+
+  def plaintext
     @words.join(' ')
   end
 
