@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 class Autotag::Extractor::Term
+	attr_reader :term, :coordinates
 	# define location in parent documents
 	# define location in histogram?
 	def initialize(term,coordinates)
@@ -11,7 +12,7 @@ class Autotag::Extractor::Term
 		return @term
 	end
 
-	def merge(coordiantes)
+	def merge(coordinates)
 		@coordinates << coordinates
 	end
 end

@@ -6,19 +6,25 @@
 class Autotag::Extractor::Stem
   attr_reader :stem, :terms
 
-  def initialize(stem,term=nil,coods=[])
+  def initialize(stem,term=nil,coordinates=[])
     @stem = stem
     @terms = []
-    if term.present? && coods.any?
-      self.add_term(term,coods)
+    if !term.nil? && coordinates.any?
+      self.add_term(term,coordinates)
+    else
+      p "error! #{term} #{coordinates}"
     end
   end
 
+  def size
+    @terms.size
+  end
+
   def add_term(term,coordinates)
-    if find_term(term)
+    if (t=find_term(term)).nil?
       @terms << Autotag::Extractor::Term.new(term,coordinates)
     else
-      term.merge(coordinates)
+      t.merge(coordinates)
     end
   end
 

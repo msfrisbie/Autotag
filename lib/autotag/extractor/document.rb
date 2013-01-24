@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 class Autotag::Extractor::Document
-  attr_reader :url, :histogram
+  attr_reader :url, :stems, :textblocks, :histogram
 
   def initialize(url)
 
@@ -12,10 +12,12 @@ class Autotag::Extractor::Document
 
     #@histogram = Autotag::Extractor::Histogram.new
 
-    @textblocks.each_with_index do |f,blockindex|
-      f.stemwords.each_with_index do |g,wordindex|
-        self.stem(g[0],g[1],[blockindex,wordindex])
+    s = Lingua::Stemmer.new(:language => "en")
 
+    @textblocks.each_with_index do |f,blockindex|
+      #f.stemwords.each_with_index do |g,wordindex|
+      f.words.each_with_index do |g,wordindex|
+        self.stem(g,[blockindex,wordindex],s)
       end
     end
 
@@ -29,16 +31,17 @@ class Autotag::Extractor::Document
   #   @histogram
   # end
 
-  def stem(stem,term,coods)
+  def stem(term,coordinates,stemmer)
+    stem = stemmer.stem(term)
     s = @stems[stem]
-    if s.present?
-      s.add_term(term,coods)
+    if !s.nil?#present?
+      s.add_term(term,coordinates)
     else 
-      @stems[stem] = Autotag::Extractor::Stem.new(stem,term,coods)
+      @stems[stem] = Autotag::Extractor::Stem.new(stem,term,coordinates)
     end
   end
 
-  def self.split_html(node,charsize=0,wordsize=0)
+  def split_html(node,charsize=0,wordsize=0)
     arr = []
     subset = node.children.remove
     charsize += node.to_html.gsub("\n",'').size

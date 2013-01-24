@@ -15,9 +15,11 @@ class Autotag::Extractor::Textblock
     return @wordsize.to_f/@charsize.to_f
   end
 
-  def stemwords
-    s = Lingua::Stemmer.new(:language => "en")
-    @words.map{|f| [s.stem(f.gsub(/[^A-Za-z0-9]/,'')),f]}
+  # def stemwords
+  def words
+    # s = Lingua::Stemmer.new(:language => "en")
+    #@words.map{|f| [s.stem(f.gsub(/[^A-Za-z0-9]/,'')),f]}
+    @words.map{|f| f.gsub(/[^A-Za-z0-9]/,'')}
   end
 
   def plaintext
